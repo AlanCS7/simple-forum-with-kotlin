@@ -6,41 +6,46 @@ import dev.alancss.forum.dto.UpdateTopicDto
 import dev.alancss.forum.exception.ResourceNotFoundException
 import dev.alancss.forum.mapper.TopicMapper
 import dev.alancss.forum.model.Topic
+import dev.alancss.forum.repository.TopicRepository
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
 @Service
 class TopicService(
+    private val topicRepository: TopicRepository,
     private val courseService: CourseService,
     private val authorService: AuthorService,
     private val topicMapper: TopicMapper
 ) {
 
-    private val topics = mutableListOf<Topic>()
-    private var currentId = 0L
-
-    fun getAllTopics(): List<TopicResponseDto> = topics.map { topicMapper.toResponseDto(it) }
+    fun getAllTopics(): List<TopicResponseDto> =
+        topicRepository.findAll()
+            .map { topicMapper.toResponseDto(it) }
 
     fun getById(id: Long): TopicResponseDto =
-        topics.firstOrNull { it.id == id }?.let { topicMapper.toResponseDto(it) }
-            ?: throw ResourceNotFoundException("Topic with id $id not found")
+        findTopicById(id).let(topicMapper::toResponseDto)
 
     fun create(dto: NewTopicDto) {
-        val course = courseService.getById(dto.courseId)
-        val author = authorService.getById(dto.authorId)
-        val topic = topicMapper.toTopic(dto, course, author).copy(id = ++currentId)
-        topics.add(topic)
+        val course = courseService.getById(dto.courseId!!)
+        val author = authorService.getById(dto.authorId!!)
+        val topic = topicMapper.toTopic(dto, course, author)
+        topicRepository.save(topic)
     }
 
-    fun update(id: Long, dto: UpdateTopicDto) =
-        topics.firstOrNull { it.id == id }?.let { topic ->
-            topic.title = dto.title
-            topic.message = dto.message
-        } ?: throw ResourceNotFoundException("Topic with id $id not found")
+    fun update(id: Long, dto: UpdateTopicDto): TopicResponseDto {
+        val topic = findTopicById(id).apply {
+            title = dto.title
+            message = dto.message
+        }
+        return topicRepository.save(topic).let(topicMapper::toResponseDto)
+    }
 
     fun delete(id: Long) {
-        val topic = topics.firstOrNull { it.id == id }
-            ?: throw ResourceNotFoundException("Topic with id $id not found")
-        topics.remove(topic)
+        val topic = findTopicById(id)
+        topicRepository.delete(topic)
     }
 
+    private fun findTopicById(id: Long): Topic =
+        topicRepository.findByIdOrNull(id)
+            ?: throw ResourceNotFoundException("Topic with id $id not found")
 }

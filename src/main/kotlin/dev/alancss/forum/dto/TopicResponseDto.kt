@@ -8,8 +8,8 @@ import java.time.LocalDateTime
 @JsonInclude(Include.NON_NULL)
 data class TopicResponseDto(
     val id: Long?,
-    val title: String,
-    val message: String,
+    var title: String,
+    var message: String,
     val status: TopicStatus,
     val createdAt: LocalDateTime
 )

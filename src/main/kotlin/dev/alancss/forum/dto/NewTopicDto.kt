@@ -11,7 +11,7 @@ data class NewTopicDto(
     @field:NotBlank(message = "Message is required")
     val message: String,
     @field:NotNull(message = "Course is required")
-    val courseId: Long,
+    val courseId: Long?,
     @field:NotNull(message = "Author is required")
-    val authorId: Long
+    val authorId: Long?
 )

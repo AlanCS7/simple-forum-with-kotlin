@@ -1,6 +1,7 @@
 package dev.alancss.forum.service
 
 import dev.alancss.forum.dto.NewTopicDto
+import dev.alancss.forum.dto.TopicByCategoryDto
 import dev.alancss.forum.dto.TopicResponseDto
 import dev.alancss.forum.dto.UpdateTopicDto
 import dev.alancss.forum.exception.ResourceNotFoundException
@@ -53,4 +54,6 @@ class TopicService(
     private fun findTopicById(id: Long): Topic =
         topicRepository.findByIdOrNull(id)
             ?: throw ResourceNotFoundException("Topic with id $id not found")
+
+    fun report(): List<TopicByCategoryDto> = topicRepository.report()
 }

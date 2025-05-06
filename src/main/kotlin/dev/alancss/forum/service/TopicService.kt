@@ -7,6 +7,8 @@ import dev.alancss.forum.exception.ResourceNotFoundException
 import dev.alancss.forum.mapper.TopicMapper
 import dev.alancss.forum.model.Topic
 import dev.alancss.forum.repository.TopicRepository
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
@@ -18,9 +20,12 @@ class TopicService(
     private val topicMapper: TopicMapper
 ) {
 
-    fun getAllTopics(): List<TopicResponseDto> =
-        topicRepository.findAll()
-            .map { topicMapper.toResponseDto(it) }
+    fun getAllTopics(courseName: String?, pageable: Pageable): Page<TopicResponseDto> {
+        val topics =
+            courseName?.let { topicRepository.findByCourseName(it, pageable) } ?: topicRepository.findAll(pageable)
+
+        return topics.map { topicMapper.toResponseDto(it) }
+    }
 
     fun getById(id: Long): TopicResponseDto =
         findTopicById(id).let(topicMapper::toResponseDto)

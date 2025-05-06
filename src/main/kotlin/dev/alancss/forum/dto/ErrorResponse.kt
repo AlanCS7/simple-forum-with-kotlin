@@ -1,7 +1,6 @@
 package dev.alancss.forum.dto
 
 import com.fasterxml.jackson.annotation.JsonInclude
-import java.time.LocalDateTime
 import java.time.OffsetDateTime
 
 @JsonInclude(JsonInclude.Include.NON_NULL)

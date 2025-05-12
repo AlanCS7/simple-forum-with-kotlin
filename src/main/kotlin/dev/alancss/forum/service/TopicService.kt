@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service
 class TopicService(
     private val topicRepository: TopicRepository,
     private val courseService: CourseService,
-    private val authorService: AuthorService,
+    private val userService: UserService,
     private val topicMapper: TopicMapper
 ) {
 
@@ -33,7 +33,7 @@ class TopicService(
 
     fun create(dto: NewTopicDto) {
         val course = courseService.getById(dto.courseId!!)
-        val author = authorService.getById(dto.authorId!!)
+        val author = userService.getById(dto.authorId!!)
         val topic = topicMapper.toTopic(dto, course, author)
         topicRepository.save(topic)
     }

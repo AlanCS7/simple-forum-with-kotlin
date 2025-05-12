@@ -7,8 +7,8 @@ import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
 @Service
-class AuthorService(
-    private val userRepository: UserRepository,
+class UserService(
+    private val userRepository: UserRepository
 ) {
 
     fun getById(id: Long): User =

@@ -6,6 +6,8 @@ import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.Table
+import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.userdetails.UserDetails
 
 @Entity
 @Table(name = "users")
@@ -17,5 +19,15 @@ class User(
     val name: String,
 
     @Column(name = "email", nullable = false, unique = true)
-    val email: String
-)
+    val email: String,
+
+    @Column(name = "password")
+    private val password: String
+) : UserDetails {
+
+    override fun getAuthorities(): Collection<GrantedAuthority?>? = emptyList()
+
+    override fun getPassword(): String? = password
+
+    override fun getUsername(): String? = email
+}

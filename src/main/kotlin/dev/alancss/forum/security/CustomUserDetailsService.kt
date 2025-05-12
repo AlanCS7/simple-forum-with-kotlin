@@ -1,4 +1,4 @@
-package dev.alancss.forum.config
+package dev.alancss.forum.security
 
 import dev.alancss.forum.repository.UserRepository
 import org.springframework.security.core.userdetails.UserDetails

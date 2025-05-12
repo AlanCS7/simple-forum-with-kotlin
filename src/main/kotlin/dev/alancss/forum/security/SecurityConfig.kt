@@ -1,4 +1,4 @@
-package dev.alancss.forum.config
+package dev.alancss.forum.security
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -20,13 +20,15 @@ class SecurityConfig(
 ) {
 
     @Bean
-    fun securityFilterChain(http: HttpSecurity, authenticationProvider: AuthenticationProvider): SecurityFilterChain {
+    fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
         return http
-            .authorizeHttpRequests { it.anyRequest().authenticated() }
+            .authorizeHttpRequests {
+                it.requestMatchers("/topics").hasAuthority("READ_WRITE")
+                it.anyRequest().authenticated()
+            }
             .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
             .formLogin { it.disable() }
             .httpBasic { }
-            .authenticationProvider(authenticationProvider)
             .build()
     }
 

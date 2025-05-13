@@ -12,4 +12,4 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
 jwt:
-  secret-key: y9e#1k8_2t7$e3r_5c4^e0s_t1n&8a3_t6r*0o5_p7m+2i9
+  secret-key: T1r@mpOnEtk#8xIS9evcLy^DAqE$CnMlFgWhiopRTuKBsNjXg4z7V0QdM53aYw6U

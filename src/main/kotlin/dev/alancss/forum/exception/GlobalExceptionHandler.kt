@@ -6,8 +6,10 @@ import jakarta.servlet.http.HttpServletRequest
 import org.springframework.http.HttpStatus
 import org.springframework.http.HttpStatus.BAD_REQUEST
 import org.springframework.http.HttpStatus.NOT_FOUND
+import org.springframework.http.HttpStatus.UNAUTHORIZED
 import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageNotReadableException
+import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseStatus
@@ -64,6 +66,19 @@ class GlobalExceptionHandler {
             status = BAD_REQUEST.value(),
             error = BAD_REQUEST.name,
             message = "Invalid request format. Please check your request body and try again.",
+            path = httpServletRequest.requestURI
+        )
+
+    @ExceptionHandler(BadCredentialsException::class)
+    @ResponseStatus(UNAUTHORIZED)
+    fun handleBadCredentialsException(
+        exception: BadCredentialsException,
+        httpServletRequest: HttpServletRequest
+    ): ErrorResponse =
+        ErrorResponse(
+            status = UNAUTHORIZED.value(),
+            error = UNAUTHORIZED.name,
+            message = "Invalid username or password",
             path = httpServletRequest.requestURI
         )
 

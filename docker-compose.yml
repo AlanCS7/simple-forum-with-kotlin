@@ -10,6 +10,27 @@ services:
       - "5432:5432"
     volumes:
       - forum_db:/var/lib/postgresql/data
+    networks:
+      - forum-net
+
+  forum-api:
+    container_name: forum-api
+    image: alancs7/simple-forum-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      DB_URL: jdbc:postgresql://postgres:5432/forum
+    ports:
+      - "8080:8080"
+    networks:
+      - forum-net
+    depends_on:
+      - postgres
 
 volumes:
   forum_db:
+
+networks:
+  forum-net:
+    driver: bridge

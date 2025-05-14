@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/forum
-    username: username
-    password: password
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/forum}
+    username: ${DB_USER:username}
+    password: ${DB_PASSWORD:password}
 
   jpa:
     show-sql: true

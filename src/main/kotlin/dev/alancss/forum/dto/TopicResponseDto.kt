@@ -11,5 +11,6 @@ data class TopicResponseDto(
     var title: String,
     var message: String,
     val status: TopicStatus,
-    val createdAt: LocalDateTime?
+    val createdAt: LocalDateTime?,
+    val updatedAt: LocalDateTime?
 )

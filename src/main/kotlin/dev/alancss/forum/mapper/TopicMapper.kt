@@ -15,7 +15,8 @@ class TopicMapper {
         title = topic.title,
         message = topic.message,
         status = topic.status,
-        createdAt = topic.createdAt
+        createdAt = topic.createdAt,
+        updatedAt = topic.updatedAt
     )
 
     fun toTopic(dto: NewTopicDto, course: Course, author: User) = Topic(

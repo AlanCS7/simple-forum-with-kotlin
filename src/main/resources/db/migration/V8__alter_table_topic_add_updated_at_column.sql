@@ -1,0 +1,2 @@
+ALTER TABLE topic
+    ADD COLUMN updated_at TIMESTAMP;

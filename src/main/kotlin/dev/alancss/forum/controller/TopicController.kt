@@ -31,7 +31,7 @@ class TopicController(private val service: TopicService) {
     @GetMapping
     @Cacheable("topics")
     fun getAll(
-        @RequestParam("courseName", required = false) courseName: String?,
+        @RequestParam("courseName", required = false) courseName: String? = null,
         @PageableDefault(size = 5, sort = ["createdAt"], direction = Sort.Direction.DESC) pageable: Pageable
     ): Page<TopicResponseDto> =
         service.getAllTopics(courseName, pageable)

@@ -12,13 +12,13 @@ import dev.alancss.forum.repository.TopicRepository
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull
 import java.time.LocalDateTime
-import kotlin.test.assertEquals
 
 class TopicServiceTest {
     private val pageable = mockk<Pageable>()

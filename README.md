@@ -15,6 +15,9 @@ A lightweight API for a simple question-and-answer forum where users can create,
 * **Caching**: Spring Cache (in-memory)
 * **Dependency Management**: Maven
 * **Environment**: Docker + Docker Compose
+* **Authentication**: Spring Security with JWT
+* **Documentation**: Swagger/OpenAPI (Available at `GET /swagger-ui.html`)
+* **Testing**: JUnit + Mockito
 
 ---
 
@@ -22,6 +25,7 @@ A lightweight API for a simple question-and-answer forum where users can create,
 
 ```
 src/main/kotlin/dev/alancss/forum
+├── config             # Configuration classes (e.g., Swagger, Security)
 ├── controller         # Handles HTTP requests
 ├── dto                # Data Transfer Objects
 ├── enum               # Enumerations (e.g., TopicStatus)
@@ -29,6 +33,7 @@ src/main/kotlin/dev/alancss/forum
 ├── mapper             # Entity/DTO mapping utilities
 ├── model              # JPA Entities (Topic, Course, User, etc.)
 ├── repository         # Spring Data repositories
+├── security           # JWT, filters, and security configs
 ├── service            # Business logic
 └── ForumApplication.kt
 ```
@@ -42,6 +47,9 @@ src/main/kotlin/dev/alancss/forum
 * ✅ **Delete Topic**
 * ✅ **List Topics** (with pagination and optional filter by course name)
 * ✅ **Generate Report** (Topics grouped by category)
+* ✅ **Authentication and Authorization** using JWT and Spring Security
+* ✅ **API Documentation** available at `GET /swagger-ui.html`
+* ✅ **Unit and Integration Testing** using JUnit and Mockito
 
 ### 📌 Example: List Topics with Filter
 
@@ -95,17 +103,13 @@ This will start the PostgreSQL container for development.
 
 ## 🎯 Future Improvements
 
-* 🔐 Add authentication/authorization (JWT + Spring Security)
-* 🧪 Unit and integration testing (JUnit + Mockito)
-* 📘 API Documentation with Swagger/OpenAPI
 * 🚀 CI/CD Integration (GitHub Actions, etc.)
 
 ---
 
 ## 🧪 Testing
 
-* Currently, no tests
-* Plans to include unit and integration tests in the next versions
+* Includes unit and integration tests using JUnit and Mockito
 
 ---
 

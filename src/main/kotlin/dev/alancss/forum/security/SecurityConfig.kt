@@ -29,6 +29,12 @@ class SecurityConfig(
             .csrf { it.disable() }
             .authorizeHttpRequests {
                 it.requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
+                it.requestMatchers(
+                    HttpMethod.GET,
+                    "/swagger-ui.html",
+                    "/swagger-ui/**",
+                    "/v3/api-docs/**"
+                ).permitAll()
                 it.requestMatchers("/topics").hasAuthority("READ_WRITE")
                 it.anyRequest().authenticated()
             }

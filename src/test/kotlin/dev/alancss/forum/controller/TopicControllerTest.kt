@@ -24,6 +24,7 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.post
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
@@ -52,7 +53,7 @@ class TopicControllerTest {
         mockMvc
             .get(TOPIC_URL)
             .andExpect {
-                status { is4xxClientError() }
+                status { isForbidden() }
             }
     }
 
@@ -90,6 +91,7 @@ class TopicControllerTest {
     @Test
     fun `should return 200 when topics are fetched`() {
         val dateTime = LocalDateTime.now()
+        val formattedDate = dateTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
 
         val topicResponseDto = TopicResponseDto(
             id = 1L,
@@ -119,14 +121,15 @@ class TopicControllerTest {
                 jsonPath("$.content[0].title") { value("Test Topic") }
                 jsonPath("$.content[0].message") { value("This is a test topic message") }
                 jsonPath("$.content[0].status") { value("NOT_ANSWERED") }
-                jsonPath("$.content[0].createdAt") { value(dateTime.toString()) }
-                jsonPath("$.content[0].updatedAt") { value(dateTime.toString()) }
+                jsonPath("$.content[0].createdAt") { value(formattedDate) }
+                jsonPath("$.content[0].updatedAt") { value(formattedDate) }
             }
     }
 
     @Test
     fun `should return 200 when topic are fetched by id`() {
         val dateTime = LocalDateTime.now()
+        val formattedDate = dateTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
 
         val topicId = 1L
         val topicResponseDto = TopicResponseDto(
@@ -153,8 +156,8 @@ class TopicControllerTest {
                 jsonPath("$.title") { value("Test Topic") }
                 jsonPath("$.message") { value("This is a test topic message") }
                 jsonPath("$.status") { value("NOT_ANSWERED") }
-                jsonPath("$.createdAt") { value(dateTime.toString()) }
-                jsonPath("$.updatedAt") { value(dateTime.toString()) }
+                jsonPath("$.createdAt") { value(formattedDate) }
+                jsonPath("$.updatedAt") { value(formattedDate) }
             }
     }
 

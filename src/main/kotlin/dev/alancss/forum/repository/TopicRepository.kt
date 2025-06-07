@@ -1,6 +1,6 @@
 package dev.alancss.forum.repository
 
-import dev.alancss.forum.dto.TopicByCategoryDto
+import dev.alancss.forum.dto.TopicByCategoryResponse
 import dev.alancss.forum.model.Topic
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -15,7 +15,7 @@ interface TopicRepository : JpaRepository<Topic, Long> {
 
     @Query(
         """
-        SELECT new dev.alancss.forum.dto.TopicByCategoryDto(
+        SELECT new dev.alancss.forum.dto.TopicByCategoryResponse(
             c.category,
             COUNT(t)
         )
@@ -24,5 +24,5 @@ interface TopicRepository : JpaRepository<Topic, Long> {
         GROUP BY c.category
     """
     )
-    fun report(): List<TopicByCategoryDto>
+    fun report(): List<TopicByCategoryResponse>
 }

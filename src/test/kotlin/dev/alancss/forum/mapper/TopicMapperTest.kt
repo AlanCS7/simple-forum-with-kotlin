@@ -1,6 +1,6 @@
 package dev.alancss.forum.mapper
 
-import dev.alancss.forum.dto.TopicResponseDto
+import dev.alancss.forum.dto.TopicResponse
 import dev.alancss.forum.enum.TopicStatus
 import java.time.LocalDateTime
 
@@ -13,8 +13,8 @@ object TopicMapperTestFactory {
         status: TopicStatus = TopicStatus.NOT_ANSWERED,
         createdAt: LocalDateTime? = LocalDateTime.now(),
         updatedAt: LocalDateTime? = null
-    ): TopicResponseDto {
-        return TopicResponseDto(
+    ): TopicResponse {
+        return TopicResponse(
             id = id,
             title = title,
             message = message,

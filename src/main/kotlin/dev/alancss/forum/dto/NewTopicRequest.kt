@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-data class NewTopicDto(
+data class NewTopicRequest(
     @field:NotBlank(message = "Title is required")
     val title: String,
     @field:NotBlank(message = "Message is required")

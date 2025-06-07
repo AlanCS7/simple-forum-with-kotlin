@@ -1,9 +1,9 @@
 package dev.alancss.forum.controller
 
-import dev.alancss.forum.dto.NewTopicDto
-import dev.alancss.forum.dto.TopicByCategoryDto
-import dev.alancss.forum.dto.TopicResponseDto
-import dev.alancss.forum.dto.UpdateTopicDto
+import dev.alancss.forum.dto.NewTopicRequest
+import dev.alancss.forum.dto.TopicByCategoryResponse
+import dev.alancss.forum.dto.TopicResponse
+import dev.alancss.forum.dto.UpdateTopicRequest
 import dev.alancss.forum.service.TopicService
 import jakarta.validation.Valid
 import org.springframework.cache.annotation.CacheEvict
@@ -33,21 +33,21 @@ class TopicController(private val service: TopicService) {
     fun getAll(
         @RequestParam("courseName", required = false) courseName: String? = null,
         @PageableDefault(size = 5, sort = ["createdAt"], direction = Sort.Direction.DESC) pageable: Pageable
-    ): Page<TopicResponseDto> =
+    ): Page<TopicResponse> =
         service.getAllTopics(courseName, pageable)
 
     @GetMapping("/{id}")
-    fun getById(@PathVariable id: Long): TopicResponseDto = service.getById(id)
+    fun getById(@PathVariable id: Long): TopicResponse = service.getById(id)
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @CacheEvict(value = ["topics"], allEntries = true)
-    fun create(@RequestBody @Valid dto: NewTopicDto) = service.create(dto)
+    fun create(@RequestBody @Valid dto: NewTopicRequest) = service.create(dto)
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @CacheEvict(value = ["topics"], allEntries = true)
-    fun update(@PathVariable id: Long, @RequestBody @Valid dto: UpdateTopicDto) = service.update(id, dto)
+    fun update(@PathVariable id: Long, @RequestBody @Valid dto: UpdateTopicRequest) = service.update(id, dto)
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -55,5 +55,5 @@ class TopicController(private val service: TopicService) {
     fun delete(@PathVariable id: Long) = service.delete(id)
 
     @GetMapping("/report")
-    fun report(): List<TopicByCategoryDto> = service.report()
+    fun report(): List<TopicByCategoryResponse> = service.report()
 }

@@ -1,7 +1,7 @@
 package dev.alancss.forum.factory
 
-import dev.alancss.forum.dto.NewTopicDto
-import dev.alancss.forum.dto.UpdateTopicDto
+import dev.alancss.forum.dto.NewTopicRequest
+import dev.alancss.forum.dto.UpdateTopicRequest
 import dev.alancss.forum.enum.TopicStatus
 import dev.alancss.forum.model.Course
 import dev.alancss.forum.model.Topic
@@ -37,7 +37,7 @@ object TopicTestFactory {
         message: String = "Var x is not defined in the current scope",
         courseId: Long? = 1L,
         authorId: Long? = 1L
-    ) = NewTopicDto(
+    ) = NewTopicRequest(
         title = title,
         message = message,
         courseId = courseId,
@@ -47,7 +47,7 @@ object TopicTestFactory {
     fun buildUpdateTopicDto(
         title: String = "Updated title",
         message: String = "Updated message"
-    ) = UpdateTopicDto(
+    ) = UpdateTopicRequest(
         title = title,
         message = message
     )

@@ -6,7 +6,7 @@ import dev.alancss.forum.enum.TopicStatus
 import java.time.LocalDateTime
 
 @JsonInclude(Include.NON_NULL)
-data class TopicResponseDto(
+data class TopicResponse(
     val id: Long?,
     var title: String,
     var message: String,

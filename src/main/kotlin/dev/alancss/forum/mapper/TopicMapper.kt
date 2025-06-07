@@ -1,7 +1,7 @@
 package dev.alancss.forum.mapper
 
-import dev.alancss.forum.dto.NewTopicDto
-import dev.alancss.forum.dto.TopicResponseDto
+import dev.alancss.forum.dto.NewTopicRequest
+import dev.alancss.forum.dto.TopicResponse
 import dev.alancss.forum.model.Course
 import dev.alancss.forum.model.Topic
 import dev.alancss.forum.model.User
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component
 @Component
 class TopicMapper {
 
-    fun toResponseDto(topic: Topic) = TopicResponseDto(
+    fun toResponseDto(topic: Topic) = TopicResponse(
         id = topic.id,
         title = topic.title,
         message = topic.message,
@@ -19,7 +19,7 @@ class TopicMapper {
         updatedAt = topic.updatedAt
     )
 
-    fun toTopic(dto: NewTopicDto, course: Course, author: User) = Topic(
+    fun toTopic(dto: NewTopicRequest, course: Course, author: User) = Topic(
         title = dto.title,
         message = dto.message,
         course = course,

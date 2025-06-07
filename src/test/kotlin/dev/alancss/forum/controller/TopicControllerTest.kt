@@ -1,8 +1,8 @@
 package dev.alancss.forum.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import dev.alancss.forum.dto.NewTopicDto
-import dev.alancss.forum.dto.TopicResponseDto
+import dev.alancss.forum.dto.NewTopicRequest
+import dev.alancss.forum.dto.TopicResponse
 import dev.alancss.forum.enum.TopicStatus
 import dev.alancss.forum.exception.ResourceNotFoundException
 import dev.alancss.forum.security.jwt.JwtUtil
@@ -70,7 +70,7 @@ class TopicControllerTest {
 
     @Test
     fun `should return 201 when a new topic is created`() {
-        val newTopicDto = NewTopicDto(
+        val request = NewTopicRequest(
             title = "New test",
             message = "New test message",
             courseId = 1L,
@@ -81,7 +81,7 @@ class TopicControllerTest {
             .post(TOPIC_URL) {
                 headers { setBearerAuth(generateToken()) }
                 contentType = MediaType.APPLICATION_JSON
-                content = objectMapper.writeValueAsString(newTopicDto)
+                content = objectMapper.writeValueAsString(request)
             }
             .andExpect {
                 status { isCreated() }
@@ -93,7 +93,7 @@ class TopicControllerTest {
         val dateTime = LocalDateTime.now()
         val formattedDate = dateTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
 
-        val topicResponseDto = TopicResponseDto(
+        val topicResponse = TopicResponse(
             id = 1L,
             title = "Test Topic",
             message = "This is a test topic message",
@@ -103,7 +103,7 @@ class TopicControllerTest {
         )
 
         val pageable = PageRequest.of(0, 5, Sort.by(Sort.Direction.DESC, "createdAt"))
-        val page = PageImpl(listOf(topicResponseDto), pageable, 1)
+        val page = PageImpl(listOf(topicResponse), pageable, 1)
 
         `when`(topicService.getAllTopics(null, pageable))
             .thenReturn(page)
@@ -132,7 +132,7 @@ class TopicControllerTest {
         val formattedDate = dateTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
 
         val topicId = 1L
-        val topicResponseDto = TopicResponseDto(
+        val topicResponse = TopicResponse(
             id = topicId,
             title = "Test Topic",
             message = "This is a test topic message",
@@ -142,7 +142,7 @@ class TopicControllerTest {
         )
 
         `when`(topicService.getById(topicId))
-            .thenReturn(topicResponseDto)
+            .thenReturn(topicResponse)
 
         mockMvc
             .get("$TOPIC_URL/$topicId") {

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import jakarta.validation.constraints.NotBlank
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-data class UpdateTopicDto(
+data class UpdateTopicRequest(
     @field:NotBlank(message = "Title is required")
     val title: String,
     @field:NotBlank(message = "Message is required")

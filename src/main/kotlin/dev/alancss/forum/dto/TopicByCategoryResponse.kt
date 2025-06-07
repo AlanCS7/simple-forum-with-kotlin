@@ -1,6 +1,6 @@
 package dev.alancss.forum.dto
 
-data class TopicByCategoryDto(
+data class TopicByCategoryResponse(
     val category: String,
     val quantity: Long
 )

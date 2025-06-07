@@ -3,6 +3,7 @@ package dev.alancss.forum.exception
 import dev.alancss.forum.dto.ErrorResponse
 import dev.alancss.forum.dto.FieldError
 import jakarta.servlet.http.HttpServletRequest
+import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.HttpStatus.BAD_REQUEST
 import org.springframework.http.HttpStatus.NOT_FOUND
@@ -17,6 +18,22 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 
 @RestControllerAdvice
 class GlobalExceptionHandler {
+
+    private val logger = LoggerFactory.getLogger(GlobalExceptionHandler::class.java)
+
+    @ExceptionHandler(BusinessException::class)
+    @ResponseStatus(BAD_REQUEST)
+    fun handleBusinessException(
+        exception: BusinessException,
+        httpServletRequest: HttpServletRequest
+    ): ErrorResponse =
+        ErrorResponse(
+            status = BAD_REQUEST.value(),
+            error = "Business Exception",
+            message = exception.message,
+            path = httpServletRequest.requestURI
+        )
+
 
     @ExceptionHandler(ResourceNotFoundException::class)
     fun handleResourceNotFoundException(
@@ -85,7 +102,7 @@ class GlobalExceptionHandler {
     @ExceptionHandler(Exception::class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     fun handleException(exception: Exception, httpServletRequest: HttpServletRequest): ErrorResponse {
-        exception.printStackTrace()
+        logger.error("Unexpected error", exception)
 
         val message = "An unexpected error occurred: ${exception.localizedMessage}"
         return ErrorResponse(

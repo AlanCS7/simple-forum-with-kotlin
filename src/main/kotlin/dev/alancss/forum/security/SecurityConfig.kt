@@ -1,5 +1,6 @@
 package dev.alancss.forum.security
 
+import dev.alancss.forum.enum.RoleType
 import dev.alancss.forum.security.jwt.JwtAuthenticationFilter
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -35,7 +36,7 @@ class SecurityConfig(
                     "/swagger-ui/**",
                     "/v3/api-docs/**"
                 ).permitAll()
-                it.requestMatchers("/topics").hasAuthority("READ_WRITE")
+                it.requestMatchers("/topics").hasAuthority(RoleType.READ_WRITE.name)
                 it.anyRequest().authenticated()
             }
             .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }

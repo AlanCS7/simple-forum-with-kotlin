@@ -1,6 +1,7 @@
 package dev.alancss.forum.service
 
-import dev.alancss.forum.dto.AuthRequest
+import dev.alancss.forum.dto.AuthLoginRequest
+import dev.alancss.forum.dto.AuthRegisterRequest
 import dev.alancss.forum.dto.AuthResponse
 import dev.alancss.forum.model.User
 import dev.alancss.forum.security.jwt.JwtUtil
@@ -10,15 +11,16 @@ import org.springframework.stereotype.Service
 
 @Service
 class AuthService(
+    private val userService: UserService,
     private val authenticationManager: AuthenticationManager,
     private val jwtUtil: JwtUtil
 ) {
 
-    fun login(authRequest: AuthRequest): AuthResponse {
+    fun login(authLoginRequest: AuthLoginRequest): AuthResponse {
         val auth = authenticationManager.authenticate(
             UsernamePasswordAuthenticationToken(
-                authRequest.username,
-                authRequest.password
+                authLoginRequest.username,
+                authLoginRequest.password
             )
         )
 
@@ -27,6 +29,10 @@ class AuthService(
         val expiresIn = (jwtUtil.getExpiration(token) - System.currentTimeMillis()) / 1000
 
         return AuthResponse(token, expiresIn, "Bearer")
+    }
+
+    fun register(request: AuthRegisterRequest) {
+        userService.registerNewUser(request)
     }
 
 }

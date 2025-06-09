@@ -148,14 +148,14 @@ class TopicServiceTest {
 
         every { courseService.getById(newTopicDto.courseId!!) } returns course
         every { userService.getById(newTopicDto.authorId!!) } returns author
-        every { topicMapper.toTopic(dto = newTopicDto, course = course, author = author) } returns topic
+        every { topicMapper.toTopic(request = newTopicDto, course = course, author = author) } returns topic
         every { topicRepository.save(topic) } returns topic
 
         topicService.create(newTopicDto)
 
         verify(exactly = 1) { courseService.getById(newTopicDto.courseId!!) }
         verify(exactly = 1) { userService.getById(newTopicDto.authorId!!) }
-        verify(exactly = 1) { topicMapper.toTopic(dto = newTopicDto, course = course, author = author) }
+        verify(exactly = 1) { topicMapper.toTopic(request = newTopicDto, course = course, author = author) }
         verify(exactly = 1) { topicRepository.save(topic) }
     }
 
@@ -172,7 +172,7 @@ class TopicServiceTest {
         assertEquals("Course with id ${newTopicDto.courseId} not found", exception.message)
         verify(exactly = 1) { courseService.getById(newTopicDto.courseId!!) }
         verify(exactly = 0) { userService.getById(newTopicDto.authorId!!) }
-        verify(exactly = 0) { topicMapper.toTopic(dto = newTopicDto, course = any(), author = any()) }
+        verify(exactly = 0) { topicMapper.toTopic(request = newTopicDto, course = any(), author = any()) }
         verify(exactly = 0) { topicRepository.save(any()) }
     }
 
@@ -191,7 +191,7 @@ class TopicServiceTest {
         assertEquals("Author with id ${newTopicDto.authorId} not found", exception.message)
         verify(exactly = 1) { courseService.getById(newTopicDto.courseId!!) }
         verify(exactly = 1) { userService.getById(newTopicDto.authorId!!) }
-        verify(exactly = 0) { topicMapper.toTopic(dto = newTopicDto, course = course, author = any()) }
+        verify(exactly = 0) { topicMapper.toTopic(request = newTopicDto, course = course, author = any()) }
         verify(exactly = 0) { topicRepository.save(any()) }
     }
 

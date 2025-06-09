@@ -38,11 +38,11 @@ class TopicController(private val service: TopicService) {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    fun create(@RequestBody @Valid dto: NewTopicRequest) = service.create(dto)
+    fun create(@RequestBody @Valid request: NewTopicRequest) = service.create(request)
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun update(@PathVariable id: Long, @RequestBody @Valid dto: UpdateTopicRequest) = service.update(id, dto)
+    fun update(@PathVariable id: Long, @RequestBody @Valid request: UpdateTopicRequest) = service.update(id, request)
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

@@ -38,18 +38,18 @@ class TopicService(
         findTopicById(id).let(topicMapper::toResponseDto)
 
     @CacheEvict(value = ["topics"], allEntries = true)
-    fun create(dto: NewTopicRequest) {
-        val course = courseService.getById(dto.courseId!!)
-        val author = userService.getById(dto.authorId!!)
-        val topic = topicMapper.toTopic(dto, course, author)
+    fun create(request: NewTopicRequest) {
+        val course = courseService.getById(request.courseId!!)
+        val author = userService.getById(request.authorId!!)
+        val topic = topicMapper.toTopic(request, course, author)
         topicRepository.save(topic)
     }
 
     @CacheEvict(value = ["topics"], allEntries = true)
-    fun update(id: Long, dto: UpdateTopicRequest): TopicResponse {
+    fun update(id: Long, request: UpdateTopicRequest): TopicResponse {
         val topic = findTopicById(id).apply {
-            title = dto.title
-            message = dto.message
+            title = request.title
+            message = request.message
         }
         return topicRepository.save(topic).let(topicMapper::toResponseDto)
     }

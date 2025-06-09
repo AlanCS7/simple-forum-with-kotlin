@@ -19,9 +19,9 @@ class TopicMapper {
         updatedAt = topic.updatedAt
     )
 
-    fun toTopic(dto: NewTopicRequest, course: Course, author: User) = Topic(
-        title = dto.title,
-        message = dto.message,
+    fun toTopic(request: NewTopicRequest, course: Course, author: User) = Topic(
+        title = request.title,
+        message = request.message,
         course = course,
         author = author
     )

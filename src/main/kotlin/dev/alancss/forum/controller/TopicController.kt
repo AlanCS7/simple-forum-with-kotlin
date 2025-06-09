@@ -6,8 +6,6 @@ import dev.alancss.forum.dto.TopicResponse
 import dev.alancss.forum.dto.UpdateTopicRequest
 import dev.alancss.forum.service.TopicService
 import jakarta.validation.Valid
-import org.springframework.cache.annotation.CacheEvict
-import org.springframework.cache.annotation.Cacheable
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
@@ -29,7 +27,6 @@ import org.springframework.web.bind.annotation.RestController
 class TopicController(private val service: TopicService) {
 
     @GetMapping
-    @Cacheable("topics")
     fun getAll(
         @RequestParam("courseName", required = false) courseName: String? = null,
         @PageableDefault(size = 5, sort = ["createdAt"], direction = Sort.Direction.DESC) pageable: Pageable
@@ -41,17 +38,14 @@ class TopicController(private val service: TopicService) {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @CacheEvict(value = ["topics"], allEntries = true)
     fun create(@RequestBody @Valid dto: NewTopicRequest) = service.create(dto)
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @CacheEvict(value = ["topics"], allEntries = true)
     fun update(@PathVariable id: Long, @RequestBody @Valid dto: UpdateTopicRequest) = service.update(id, dto)
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @CacheEvict(value = ["topics"], allEntries = true)
     fun delete(@PathVariable id: Long) = service.delete(id)
 
     @GetMapping("/report")

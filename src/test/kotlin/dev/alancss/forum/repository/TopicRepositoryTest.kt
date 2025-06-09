@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.data.domain.PageRequest
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
 import org.testcontainers.containers.PostgreSQLContainer
@@ -71,11 +70,11 @@ class TopicRepositoryTest {
 
     @Test
     fun `should return topic by course name`() {
-        val result = topicRepository.findByCourseName(courseName = "Kotlin", pageable = PageRequest.of(0, 10))
-        val topic = result.content.first()
+        val result = topicRepository.findByCourseName(courseName = "Kotlin")
+        val topic = result.first()
 
         assertNotNull(result)
-        assertEquals(1, result.totalElements)
+        assertEquals(1, result.size)
 
         assertEquals("Kotlin", topic.course.name)
         assertEquals("Error in Kotlin code", topic.title)

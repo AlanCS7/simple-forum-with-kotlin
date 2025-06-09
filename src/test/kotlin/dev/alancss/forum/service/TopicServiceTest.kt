@@ -7,7 +7,6 @@ import dev.alancss.forum.factory.TopicTestFactory
 import dev.alancss.forum.factory.UserTestFactory
 import dev.alancss.forum.mapper.TopicMapper
 import dev.alancss.forum.mapper.TopicMapperTestFactory
-import dev.alancss.forum.model.Topic
 import dev.alancss.forum.repository.TopicRepository
 import io.mockk.every
 import io.mockk.mockk
@@ -15,80 +14,92 @@ import io.mockk.verify
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull
 import java.time.LocalDateTime
+import java.util.*
 
 class TopicServiceTest {
-    private val pageable = mockk<Pageable>()
     private val topicRepository = mockk<TopicRepository>()
     private val courseService = mockk<CourseService>()
     private val userService = mockk<UserService>()
     private val topicMapper = mockk<TopicMapper>()
+    private val topicCacheService = mockk<TopicCacheService>()
 
-    val topicService = TopicService(topicRepository, courseService, userService, topicMapper)
+    val topicService = TopicService(topicRepository, courseService, userService, topicMapper, topicCacheService)
 
     @Test
     fun `should return topics by course name`() {
         val courseName = "Kotlin"
-        val topic = TopicTestFactory.build()
-        val page = PageImpl(listOf(topic))
+        val topicResponseDto = TopicMapperTestFactory.toResponseDto()
 
-        every { topicRepository.findByCourseName(courseName, pageable) } returns page
-        every { topicMapper.toResponseDto(topic) } returns TopicMapperTestFactory.toResponseDto()
+        val pageable = mockk<Pageable>()
+        every { pageable.offset } returns 0L
+        every { pageable.pageSize } returns 10
+        every { pageable.pageNumber } returns 0
+        every { pageable.toOptional() } returns Optional.of(pageable)
+
+        every { topicCacheService.getCachedTopics(courseName, pageable) } returns listOf(topicResponseDto)
 
         val result = topicService.getAllTopics(courseName, pageable)
 
         assertEquals(1, result.content.size)
-        verify(exactly = 1) { topicRepository.findByCourseName(courseName, pageable) }
-        verify(exactly = 0) { topicRepository.findAll(pageable) }
-        verify(exactly = 1) { topicMapper.toResponseDto(topic) }
+        assertEquals(topicResponseDto, result.content.first())
+
+        verify(exactly = 1) { topicCacheService.getCachedTopics(courseName, pageable) }
     }
 
     @Test
     fun `should return all topics when course name is null`() {
-        val topic = TopicTestFactory.build()
-        val page = PageImpl(listOf(topic))
+        val topicResponseDto = TopicMapperTestFactory.toResponseDto()
 
-        every { topicRepository.findAll(pageable) } returns page
-        every { topicMapper.toResponseDto(topic) } returns TopicMapperTestFactory.toResponseDto()
+        val pageable = mockk<Pageable>()
+        every { pageable.offset } returns 0L
+        every { pageable.pageSize } returns 10
+        every { pageable.pageNumber } returns 0
+        every { pageable.toOptional() } returns Optional.of(pageable)
+
+        every { topicCacheService.getCachedTopics(null, pageable) } returns listOf(topicResponseDto)
 
         val result = topicService.getAllTopics(null, pageable)
 
         assertEquals(1, result.content.size)
-        verify(exactly = 1) { topicRepository.findAll(pageable) }
-        verify(exactly = 0) { topicRepository.findByCourseName(any(), any()) }
-        verify(exactly = 1) { topicMapper.toResponseDto(topic) }
+        verify(exactly = 1) { topicCacheService.getCachedTopics(null, pageable) }
     }
 
     @Test
     fun `should return empty page when no topics found by course name`() {
         val courseName = "Nonexistent Course"
-        val emptyPage = PageImpl(emptyList<Topic>())
 
-        every { topicRepository.findByCourseName(courseName, pageable) } returns emptyPage
+        val pageable = mockk<Pageable>()
+        every { pageable.offset } returns 0L
+        every { pageable.pageSize } returns 10
+        every { pageable.pageNumber } returns 0
+        every { pageable.toOptional() } returns Optional.of(pageable)
+
+        every { topicCacheService.getCachedTopics(courseName, pageable) } returns emptyList()
 
         val result = topicService.getAllTopics(courseName, pageable)
 
         assertEquals(0, result.content.size)
-        verify(exactly = 1) { topicRepository.findByCourseName(courseName, pageable) }
-        verify(exactly = 0) { topicRepository.findAll(pageable) }
-        verify(exactly = 0) { topicMapper.toResponseDto(any()) }
+        verify(exactly = 1) { topicCacheService.getCachedTopics(courseName, pageable) }
     }
 
     @Test
     fun `should return empty page when no topics found and course name is null`() {
-        val emptyPage = PageImpl(emptyList<Topic>())
+        val pageable = mockk<Pageable>()
+        every { pageable.offset } returns 0L
+        every { pageable.pageSize } returns 10
+        every { pageable.pageNumber } returns 0
+        every { pageable.toOptional() } returns Optional.of(pageable)
 
-        every { topicRepository.findAll(pageable) } returns emptyPage
+        every { topicCacheService.getCachedTopics(null, pageable) } returns emptyList()
 
         val result = topicService.getAllTopics(null, pageable)
 
         assertEquals(0, result.content.size)
-        verify(exactly = 1) { topicRepository.findAll(pageable) }
-        verify(exactly = 0) { topicRepository.findByCourseName(any(), any()) }
-        verify(exactly = 0) { topicMapper.toResponseDto(any()) }
+
+        verify(exactly = 1) { topicCacheService.getCachedTopics(null, pageable) }
     }
 
     @Test

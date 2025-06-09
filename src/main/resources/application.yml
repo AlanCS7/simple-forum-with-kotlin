@@ -10,6 +10,15 @@ spring:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
+  cache:
+    type: redis
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
 
 jwt:
   secret-key: T1r@mpOnEtk#8xIS9evcLy^DAqE$CnMlFgWhiopRTuKBsNjXg4z7V0QdM53aYw6U
+
+cache:
+  ttl: 60 # minutos

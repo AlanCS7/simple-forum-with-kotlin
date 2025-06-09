@@ -13,6 +13,16 @@ services:
     networks:
       - forum-net
 
+  redis:
+    container_name: redis
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - forum-net
+
   forum-api:
     container_name: forum-api
     image: alancs7/simple-forum-api
@@ -21,15 +31,19 @@ services:
       dockerfile: Dockerfile
     environment:
       DB_URL: jdbc:postgresql://postgres:5432/forum
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
     ports:
       - "8080:8080"
     networks:
       - forum-net
     depends_on:
       - postgres
+      - redis
 
 volumes:
   forum_db:
+  redis-data:
 
 networks:
   forum-net:

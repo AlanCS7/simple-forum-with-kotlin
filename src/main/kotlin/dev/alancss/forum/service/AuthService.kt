@@ -7,6 +7,7 @@ import dev.alancss.forum.model.User
 import dev.alancss.forum.security.jwt.JwtUtil
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
 
 @Service
@@ -35,4 +36,8 @@ class AuthService(
         userService.registerNewUser(request)
     }
 
+    fun getCurrentUser(): User {
+        val principal = SecurityContextHolder.getContext().authentication.principal as User
+        return userService.getById(principal.id!!)
+    }
 }

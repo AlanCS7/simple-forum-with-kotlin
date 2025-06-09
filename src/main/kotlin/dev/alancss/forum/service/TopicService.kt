@@ -60,7 +60,7 @@ class TopicService(
         topicRepository.delete(topic)
     }
 
-    private fun findTopicById(id: Long): Topic =
+    fun findTopicById(id: Long): Topic =
         topicRepository.findByIdOrNull(id)
             ?: throw ResourceNotFoundException("Topic with id $id not found")
 

@@ -1,7 +1,6 @@
 package dev.alancss.forum.controller
 
 import dev.alancss.forum.dto.NewTopicRequest
-import dev.alancss.forum.dto.TopicByCategoryResponse
 import dev.alancss.forum.dto.TopicResponse
 import dev.alancss.forum.dto.UpdateTopicRequest
 import dev.alancss.forum.service.TopicService
@@ -47,7 +46,4 @@ class TopicController(private val service: TopicService) {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun delete(@PathVariable id: Long) = service.delete(id)
-
-    @GetMapping("/report")
-    fun report(): List<TopicByCategoryResponse> = service.report()
 }

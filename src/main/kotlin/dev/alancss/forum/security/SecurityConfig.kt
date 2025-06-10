@@ -38,6 +38,7 @@ class SecurityConfig(
                 ).permitAll()
                 it.requestMatchers("/topics").hasAuthority(RoleType.READ_WRITE.name)
                 it.requestMatchers("/answers").hasAuthority(RoleType.READ_WRITE.name)
+                it.requestMatchers("/reports").hasAuthority(RoleType.ADMIN.name)
                 it.anyRequest().authenticated()
             }
             .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }

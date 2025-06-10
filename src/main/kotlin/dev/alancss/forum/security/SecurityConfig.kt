@@ -37,6 +37,7 @@ class SecurityConfig(
                     "/v3/api-docs/**"
                 ).permitAll()
                 it.requestMatchers("/topics").hasAuthority(RoleType.READ_WRITE.name)
+                it.requestMatchers("/answers").hasAuthority(RoleType.READ_WRITE.name)
                 it.anyRequest().authenticated()
             }
             .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
@@ -51,8 +52,8 @@ class SecurityConfig(
     @Bean
     fun authenticationProvider(): AuthenticationProvider =
         DaoAuthenticationProvider().apply {
-            setUserDetailsService(userDetailsService)
-            setPasswordEncoder(passwordEncoder())
+            userDetailsService = userDetailsService
+            passwordEncoder = passwordEncoder()
         }
 
     @Bean

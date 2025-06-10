@@ -23,6 +23,13 @@ services:
     networks:
       - forum-net
 
+  mail-dev:
+    container_name: mail-dev
+    image: maildev/maildev
+    ports:
+      - "1080:1080"
+      - "1025:1025"
+
   forum-api:
     container_name: forum-api
     image: alancs7/simple-forum-api
@@ -33,6 +40,9 @@ services:
       DB_URL: jdbc:postgresql://postgres:5432/forum
       REDIS_HOST: redis
       REDIS_PORT: 6379
+      EMAIL_HOSTNAME: mail-dev
+      EMAIL_USERNAME: username
+      EMAIL_PASSWORD: password
     ports:
       - "8080:8080"
     networks:

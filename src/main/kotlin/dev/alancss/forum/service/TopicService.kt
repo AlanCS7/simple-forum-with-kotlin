@@ -65,4 +65,8 @@ class TopicService(
             ?: throw ResourceNotFoundException("Topic with id $id not found")
 
     fun report(): List<TopicByCategoryResponse> = topicRepository.report()
+
+    fun save(topic: Topic): Topic {
+        return topicRepository.save(topic)
+    }
 }

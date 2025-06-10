@@ -16,9 +16,22 @@ spring:
     redis:
       host: ${REDIS_HOST:localhost}
       port: ${REDIS_PORT:6379}
+  mail:
+    host: ${EMAIL_HOSTNAME:localhost}
+    port: 1025
+    username: ${EMAIL_USERNAME:username}
+    password: ${EMAIL_PASSWORD:password}
+    properties:
+      mail:
+        transport:
+          protocol: smtp
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 
 jwt:
   secret-key: T1r@mpOnEtk#8xIS9evcLy^DAqE$CnMlFgWhiopRTuKBsNjXg4z7V0QdM53aYw6U
 
 cache:
-  ttl: 60 # minutos
+  ttl: 60 # minutes

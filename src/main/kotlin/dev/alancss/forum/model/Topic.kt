@@ -41,7 +41,7 @@ class Topic(
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    val status: TopicStatus = TopicStatus.NOT_ANSWERED,
+    var status: TopicStatus = TopicStatus.NOT_ANSWERED,
 
     @OneToMany(mappedBy = "topic", cascade = [CascadeType.ALL], orphanRemoval = true)
     val answers: List<Answer> = ArrayList(),

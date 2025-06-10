@@ -1,5 +1,6 @@
 package dev.alancss.forum.repository
 
+import dev.alancss.forum.config.AbstractTestcontainerConfig
 import dev.alancss.forum.factory.CourseTestFactory
 import dev.alancss.forum.factory.TopicTestFactory
 import org.junit.jupiter.api.AfterEach
@@ -9,46 +10,17 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.test.context.DynamicPropertyRegistry
-import org.springframework.test.context.DynamicPropertySource
-import org.testcontainers.containers.PostgreSQLContainer
-import org.testcontainers.junit.jupiter.Container
-import org.testcontainers.junit.jupiter.Testcontainers
 import kotlin.test.assertEquals
 
 @DataJpaTest
-@Testcontainers
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class TopicRepositoryTest {
+class TopicRepositoryTest : AbstractTestcontainerConfig() {
 
     @Autowired
     private lateinit var topicRepository: TopicRepository
 
     @Autowired
     lateinit var courseRepository: CourseRepository
-
-    companion object {
-        private const val POSTGRES_IMAGE = "postgres:latest"
-        private const val DB_NAME = "forum-testdb"
-        private const val DB_USERNAME = "username"
-        private const val DB_PASSWORD = "password"
-
-        @JvmField
-        @Container
-        val postgresqlContainer = PostgreSQLContainer<Nothing>(POSTGRES_IMAGE).apply {
-            withDatabaseName(DB_NAME)
-            withUsername(DB_USERNAME)
-            withPassword(DB_PASSWORD)
-        }
-
-        @JvmStatic
-        @DynamicPropertySource
-        fun configureProperties(registry: DynamicPropertyRegistry) {
-            registry.add("spring.datasource.url", postgresqlContainer::getJdbcUrl)
-            registry.add("spring.datasource.username", postgresqlContainer::getUsername)
-            registry.add("spring.datasource.password", postgresqlContainer::getPassword)
-        }
-    }
 
     @BeforeEach
     fun setUp() {

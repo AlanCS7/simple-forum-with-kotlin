@@ -1,15 +1,14 @@
 package dev.alancss.forum.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import dev.alancss.forum.config.AbstractTestcontainerConfig
 import dev.alancss.forum.dto.NewTopicRequest
 import dev.alancss.forum.dto.TopicResponse
 import dev.alancss.forum.enum.TopicStatus
 import dev.alancss.forum.exception.ResourceNotFoundException
 import dev.alancss.forum.security.jwt.JwtUtil
 import dev.alancss.forum.service.TopicService
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.mockito.Mockito.reset
 import org.mockito.Mockito.`when`
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -18,7 +17,6 @@ import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.http.MediaType
-import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
@@ -28,8 +26,7 @@ import java.time.format.DateTimeFormatter
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-class TopicControllerTest {
+class TopicControllerTest : AbstractTestcontainerConfig() {
 
     @Autowired
     private lateinit var mockMvc: MockMvc
@@ -42,11 +39,6 @@ class TopicControllerTest {
 
     @MockitoBean
     private lateinit var topicService: TopicService
-
-    @BeforeEach
-    fun resetMocks() {
-        reset(topicService)
-    }
 
     @Test
     fun `should return 403 when no authorization header provided`() {

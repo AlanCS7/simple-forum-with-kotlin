@@ -50,6 +50,12 @@ src/main/kotlin/dev/alancss/forum
 * ✅ **Authentication and Authorization** using JWT and Spring Security
 * ✅ **API Documentation** available at `GET /swagger-ui.html`
 * ✅ **Unit and Integration Testing** using JUnit and Mockito
+* ✅ **Database Versioning** with Flyway
+* ✅ **Caching** using Redis
+* ✅ **Docker Compose** for local development environment
+* ✅ **Exception Handling** with custom error responses
+* ✅ **Email Notifications** (using MailDev for development)
+* ✅ **Admin Features** (Report generation) with Thymeleaf
 
 ### 📌 Example: List Topics with Filter
 
@@ -57,10 +63,10 @@ src/main/kotlin/dev/alancss/forum
 GET /topics?courseName=Java EE
 ```
 
-### 📌 Example: Report by Category
+### 📌 Example: Report by Category (only for Admins)
 
 ```http
-GET /topics/report
+GET /reports
 ```
 
 Response:
@@ -93,11 +99,15 @@ Response:
 
 Make sure Docker is installed. Then run:
 
+This will start the PostgreSQL, Redis, and MailDev container for development.
 ```bash
-docker compose up -d
+docker compose up -d postgres redis mail-dev 
 ```
 
-This will start the PostgreSQL container for development.
+This will stop the PostgreSQL, Redis, and MailDev container.
+```bash
+docker compose stop postgres redis mail-dev 
+```
 
 ---
 

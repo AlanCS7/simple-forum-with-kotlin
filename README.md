@@ -12,12 +12,14 @@ A lightweight API for a simple question-and-answer forum where users can create,
 * **Persistence**: Spring Data JPA + Hibernate
 * **Database**: PostgreSQL (via Docker)
 * **Database Versioning**: Flyway
-* **Caching**: Spring Cache (in-memory)
+* **Caching**: Redis (via Docker)
 * **Dependency Management**: Maven
 * **Environment**: Docker + Docker Compose
 * **Authentication**: Spring Security with JWT
 * **Documentation**: Swagger/OpenAPI (Available at `GET /swagger-ui.html`)
 * **Testing**: JUnit + Mockito
+* **Email Notifications**: MailDev (for development)
+* **Admin Features**: Thymeleaf for report generation
 
 ---
 

@@ -3,7 +3,7 @@ name: CI
 on:
   push:
     branches:
-      - *
+      - '**'
 
 jobs:
   in-docker-test:
@@ -22,9 +22,10 @@ jobs:
       - name: Dependency cache
         uses: actions/cache@v4
         with:
-          path: ~/.m2
+          path: ~/.m2/repository
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2
+          restore-keys: |
+            ${{ runner.os }}-m2-
 
       - name: Run tests
         run: mvn -B test

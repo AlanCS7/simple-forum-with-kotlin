@@ -20,6 +20,7 @@ A lightweight API for a simple question-and-answer forum where users can create,
 * **Testing**: JUnit + Mockito
 * **Email Notifications**: MailDev (for development)
 * **Admin Features**: Thymeleaf for report generation
+* **Continuous Integration/Delivery**: GitHub Actions
 
 ---
 
@@ -58,6 +59,8 @@ src/main/kotlin/dev/alancss/forum
 * ✅ **Exception Handling** with custom error responses
 * ✅ **Email Notifications** (using MailDev for development)
 * ✅ **Admin Features** (Report generation) with Thymeleaf
+* ✅ **Continuous Integration** with GitHub Actions
+* ✅ **Continuous Delivery** with GitHub Actions
 
 ### 📌 Example: List Topics with Filter
 
@@ -110,12 +113,6 @@ This will stop the PostgreSQL, Redis, and MailDev container.
 ```bash
 docker compose stop postgres redis mail-dev 
 ```
-
----
-
-## 🎯 Future Improvements
-
-* 🚀 CI/CD Integration (GitHub Actions, etc.)
 
 ---
 
